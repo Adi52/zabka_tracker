@@ -1,13 +1,12 @@
 import performRequest, { to } from "../request";
-import { SIGNUP } from "../../utils/constans/routes";
+import { LOGIN } from "../../utils/constans/routes";
 
-const signup = async ({ username, email, password }) => {
+const login = async ({ email, password }) => {
   const request = performRequest({
     method: "post",
-    url: SIGNUP,
+    url: LOGIN,
     data: {
-      username,
-      email,
+      identifier: email,
       password,
     },
     omitAccessToken: true,
@@ -20,4 +19,4 @@ const signup = async ({ username, email, password }) => {
   return [null, response.data];
 };
 
-export default signup;
+export default login;
