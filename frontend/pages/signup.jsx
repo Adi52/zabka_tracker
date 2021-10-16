@@ -1,4 +1,4 @@
-import { Form, Input, Button, Row, Layout, Alert } from "antd";
+import { Form, Input, Button, Row, Layout, Alert, Typography } from "antd";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import signUp from "../helpers/api/signUp";
 import { useState } from "react";
@@ -6,6 +6,8 @@ import { setCookie } from "nookies";
 import { useRouter } from "next/router";
 
 const { Content } = Layout;
+const { Title } = Typography;
+
 const validateMessages = {
   required: "${label} is required!",
   types: {
@@ -50,6 +52,9 @@ const SignupPage = () => {
             onFinish={onFinish}
             validateMessages={validateMessages}
           >
+            <Title level={3} style={{ textAlign: "center", marginBottom: 40 }}>
+              SIGNUP
+            </Title>
             {emailTaken && (
               <Alert
                 message="Account already exist!"
