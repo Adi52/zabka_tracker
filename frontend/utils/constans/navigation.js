@@ -13,6 +13,11 @@ export const NO_AUTH = [
 
 const NAVIGATION = [
   {
+    id: -1,
+    label: "Dashboard",
+    slug: "/",
+  },
+  {
     id: 0,
     label: "Categories",
     slug: "/categories",

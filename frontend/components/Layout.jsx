@@ -1,17 +1,26 @@
 import PropTypes from "prop-types";
-import { parseCookies } from "nookies";
+import { parseCookies, setCookie } from "nookies";
 import { useEffect, useState } from "react";
 import { Layout, Menu } from "antd";
-import Link from "next/link";
 import NAVIGATION, { NO_AUTH } from "../utils/constans/navigation";
 import NavItem from "./NavItem";
+import { useRouter } from "next/router";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Footer } = Layout;
 const { SubMenu } = Menu;
 
 const PageLayout = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
+  const router = useRouter();
   const { jwt } = parseCookies();
+
+  const logout = () => {
+    setCookie(null, "jwt", "", {
+      maxAge: 30 * 24 * 60 * 60,
+      path: "/",
+    });
+    router.push("/");
+  };
 
   useEffect(() => {
     setIsLogged(!!jwt);
@@ -21,22 +30,25 @@ const PageLayout = ({ children }) => {
     <Layout className="layout">
       <Header>
         <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
+        <Menu theme="dark" mode="horizontal" selectedKeys={["/"]}>
           {NAVIGATION.map((item) => (
             <NavItem key={item.id} slug={item.slug} label={item.label} />
           ))}
-          {isLogged ? (
+          {!isLogged ? (
             NO_AUTH.map((item) => (
               <NavItem key={item.id} slug={item.slug} label={item.label} />
             ))
           ) : (
-            <NavItem href={`/profile`} label="Profile" />
+            <SubMenu key="sub1" title="Profile">
+              <NavItem slug={`/profile`} label="Show Profile" />
+              <Menu.Item key="5" onClick={logout}>
+                Logout
+              </Menu.Item>
+            </SubMenu>
           )}
         </Menu>
       </Header>
-      <Content style={{ padding: "0 50px" }}>
-        <div className="site-layout-content">{children}</div>
-      </Content>
+      {children}
       <Footer style={{ textAlign: "center" }}>
         Adrian Bieliński, Mikołaj Rutkowski, Krzysztof Kowalski
       </Footer>
