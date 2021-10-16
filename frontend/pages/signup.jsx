@@ -1,5 +1,9 @@
-import { Form, Input, Button, Row, Layout } from "antd";
+import { Form, Input, Button, Row, Layout, Alert } from "antd";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
+import signUp from "../helpers/api/signUp";
+import { useState } from "react";
+import { setCookie } from "nookies";
+import { useRouter } from "next/router";
 
 const { Content } = Layout;
 const validateMessages = {
@@ -11,8 +15,25 @@ const validateMessages = {
 };
 
 const SignupPage = () => {
-  const onFinish = (values) => {
-    console.log(values);
+  const router = useRouter();
+  const [emailTaken, setEmailTaken] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onFinish = async (values) => {
+    setEmailTaken(false);
+    setIsLoading(true);
+    const { username, email, password } = values?.user;
+    const [error, response] = await signUp({ username, email, password });
+    if (error) {
+      setEmailTaken(true);
+    } else {
+      setCookie(null, "jwt", response.jwt, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+      });
+      router.push("/");
+    }
+    setIsLoading(false);
   };
   return (
     <Row
@@ -29,9 +50,17 @@ const SignupPage = () => {
             onFinish={onFinish}
             validateMessages={validateMessages}
           >
+            {emailTaken && (
+              <Alert
+                message="Account already exist!"
+                type="error"
+                style={{ marginBottom: 25 }}
+              />
+            )}
+
             <Form.Item
               name={["user", "username"]}
-              rules={[{ required: true }, { min: 6 }]}
+              rules={[{ required: true }, { min: 4 }]}
             >
               <Input
                 size="large"
@@ -93,9 +122,13 @@ const SignupPage = () => {
                 prefix={<LockOutlined />}
               />
             </Form.Item>
-
             <Form.Item>
-              <Button type="primary" htmlType="submit" block>
+              <Button
+                type="primary"
+                htmlType="submit"
+                block
+                loading={isLoading}
+              >
                 Submit
               </Button>
             </Form.Item>

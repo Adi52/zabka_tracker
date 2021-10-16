@@ -5,3 +5,5 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
 } else {
   axios.defaults.baseURL = "http://localhost:1337"; // todo: change it when backend will be on heroku
 }
+
+export const SIGNUP = "/auth/local/register";

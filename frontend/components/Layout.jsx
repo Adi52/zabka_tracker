@@ -2,11 +2,10 @@ import PropTypes from "prop-types";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import { Layout, Menu } from "antd";
-import Link from "next/link";
 import NAVIGATION, { NO_AUTH } from "../utils/constans/navigation";
 import NavItem from "./NavItem";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Footer } = Layout;
 const { SubMenu } = Menu;
 
 const PageLayout = ({ children }) => {
@@ -21,16 +20,24 @@ const PageLayout = ({ children }) => {
     <Layout className="layout">
       <Header>
         <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          selectedKeys={["/"]}
+          openKeys={["/"]}
+        >
           {NAVIGATION.map((item) => (
             <NavItem key={item.id} slug={item.slug} label={item.label} />
           ))}
-          {isLogged ? (
+          {!isLogged ? (
             NO_AUTH.map((item) => (
               <NavItem key={item.id} slug={item.slug} label={item.label} />
             ))
           ) : (
-            <NavItem href={`/profile`} label="Profile" />
+            <SubMenu key="sub1" title="Profile">
+              <NavItem slug={`/profile`} label="Show Profile" />
+              <Menu.Item key="5">Logout</Menu.Item>
+            </SubMenu>
           )}
         </Menu>
       </Header>
