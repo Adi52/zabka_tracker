@@ -34,9 +34,7 @@ const PageLayout = ({ children }) => {
           )}
         </Menu>
       </Header>
-      <Content style={{ padding: "0 50px" }}>
-        <div className="site-layout-content">{children}</div>
-      </Content>
+      {children}
       <Footer style={{ textAlign: "center" }}>
         Adrian Bieliński, Mikołaj Rutkowski, Krzysztof Kowalski
       </Footer>
