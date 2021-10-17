@@ -49,3 +49,7 @@ a {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.justify-end {
+  justify-content: flex-end;
+}

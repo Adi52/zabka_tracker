@@ -3,6 +3,7 @@ import Link from "next/link";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import getCategoriesList from "../../helpers/api/getCategoriesList";
+import AddCategoryModal from "../../components/AddCategoryModal";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -10,6 +11,7 @@ const { Title } = Typography;
 const CategoriesPage = ({ categories }) => {
   const { jwt } = parseCookies();
   const [isLogged, setIsLogged] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if (jwt) {
@@ -28,7 +30,11 @@ const CategoriesPage = ({ categories }) => {
         <Title level={3} style={{ marginBottom: 0 }}>
           Categories
         </Title>
-        {isLogged && <Button type="primary">+ Add category</Button>}
+        {isLogged && (
+          <Button type="primary" onClick={() => setModalVisible(true)}>
+            + Add category
+          </Button>
+        )}
       </div>
       <div
         className="site-layout-content"
@@ -44,7 +50,12 @@ const CategoriesPage = ({ categories }) => {
               <Card
                 title={category.name}
                 bordered={false}
-                style={{ width: 300, marginRight: 40, cursor: "pointer" }}
+                style={{
+                  width: 290,
+                  marginRight: 30,
+                  marginBottom: 30,
+                  cursor: "pointer",
+                }}
               >
                 <p>{category.description}</p>
               </Card>
@@ -52,6 +63,7 @@ const CategoriesPage = ({ categories }) => {
           ))}
         </div>
       </div>
+      <AddCategoryModal setVisible={setModalVisible} visible={modalVisible} />
     </Content>
   );
 };
