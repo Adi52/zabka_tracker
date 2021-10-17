@@ -27,11 +27,6 @@ const NAVIGATION = [
     label: "Users",
     slug: "/users",
   },
-  {
-    id: 2,
-    label: "Authors",
-    slug: "/authors",
-  },
 ];
 
 export default NAVIGATION;
