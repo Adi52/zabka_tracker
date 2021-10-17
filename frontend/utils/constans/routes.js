@@ -10,3 +10,4 @@ export const SIGNUP = "/auth/local/register";
 export const LOGIN = "/auth/local";
 export const CATEGORIES = "/categories";
 export const USERS = "/users";
+export const MARKERS = "/markers";

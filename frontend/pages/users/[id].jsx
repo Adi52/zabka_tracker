@@ -1,5 +1,6 @@
 import { Layout, Typography } from "antd";
 import getUserById from "../../helpers/api/getUserById";
+import Map from "../../components/Map";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -15,10 +16,12 @@ const UserPage = ({ userData }) => {
         className="site-layout-content"
         style={{
           padding: 24,
-          minHeight: "80vh",
-          backgroundColor: "transparent",
+          minHeight: "78vh",
+          display: "flex",
         }}
-      ></div>
+      >
+        <Map markers={userData.markers} />
+      </div>
     </Content>
   );
 };

@@ -1,18 +1,35 @@
-import { Card, Layout, Typography } from "antd";
-import getCategoriesList from "../../helpers/api/getCategoriesList";
+import { Button, Card, Layout, Typography } from "antd";
 import Link from "next/link";
+import { parseCookies } from "nookies";
+import { useEffect, useState } from "react";
+import getCategoriesList from "../../helpers/api/getCategoriesList";
 
 const { Content } = Layout;
 const { Title } = Typography;
 
 const CategoriesPage = ({ categories }) => {
-  console.log(categories);
+  const { jwt } = parseCookies();
+  const [isLogged, setIsLogged] = useState(false);
+
+  useEffect(() => {
+    if (jwt) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+  }, [jwt]);
+
   return (
     <Content
       className="site-layout"
       style={{ padding: "0 50px", marginTop: 64 }}
     >
-      <Title level={3}>Categories</Title>
+      <div className="flex-row justify-between">
+        <Title level={3} style={{ marginBottom: 0 }}>
+          Categories
+        </Title>
+        {isLogged && <Button type="primary">+ Add category</Button>}
+      </div>
       <div
         className="site-layout-content"
         style={{

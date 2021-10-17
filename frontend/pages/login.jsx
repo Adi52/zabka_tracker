@@ -1,4 +1,13 @@
-import { Form, Input, Button, Row, Layout, Alert, Typography } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Row,
+  Layout,
+  Alert,
+  Typography,
+  notification,
+} from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { setCookie } from "nookies";
@@ -27,6 +36,15 @@ const LoginPage = () => {
       setCookie(null, "jwt", response.jwt, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
+      });
+      setCookie(null, "userId", response.user?.id, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+      });
+      notification.success({
+        key: "login",
+        message: "Login",
+        description: "Successfully logged in.",
       });
       router.push("/");
     }

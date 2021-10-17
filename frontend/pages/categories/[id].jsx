@@ -1,5 +1,6 @@
 import { Layout, Typography } from "antd";
 import getCategoryById from "../../helpers/api/getCategoryById";
+import Map from "../../components/Map";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -17,13 +18,11 @@ const CategoryPage = ({ category }) => {
         className="site-layout-content"
         style={{
           padding: 24,
-          minHeight: "80vh",
-          backgroundColor: "transparent",
+          minHeight: "78vh",
+          display: "flex",
         }}
       >
-        {/*  todo: add map and markers list */}
-        {/* markers.map... */}
-        {/*  */}
+        <Map markers={markers} />
       </div>
     </Content>
   );

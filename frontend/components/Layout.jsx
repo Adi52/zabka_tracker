@@ -1,10 +1,11 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from "prop-types";
 import { parseCookies, setCookie } from "nookies";
 import { useEffect, useState } from "react";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, notification } from "antd";
+import { useRouter } from "next/router";
 import NAVIGATION, { NO_AUTH } from "../utils/constans/navigation";
 import NavItem from "./NavItem";
-import { useRouter } from "next/router";
 
 const { Header, Footer } = Layout;
 const { SubMenu } = Menu;
@@ -12,12 +13,17 @@ const { SubMenu } = Menu;
 const PageLayout = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
   const router = useRouter();
-  const { jwt } = parseCookies();
+  const { jwt, userId } = parseCookies();
 
   const logout = () => {
     setCookie(null, "jwt", "", {
       maxAge: 30 * 24 * 60 * 60,
       path: "/",
+    });
+    notification.success({
+      key: "logout",
+      message: "Logout",
+      description: "Successfully logged out.",
     });
     router.push("/");
   };
@@ -40,7 +46,7 @@ const PageLayout = ({ children }) => {
             ))
           ) : (
             <SubMenu key="sub1" title="Profile">
-              <NavItem slug={`/profile`} label="Show Profile" />
+              <NavItem slug={`/users/${userId}`} label="Show Profile" />
               <Menu.Item key="5" onClick={logout}>
                 Logout
               </Menu.Item>

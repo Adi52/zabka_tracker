@@ -1,9 +1,18 @@
-import { Form, Input, Button, Row, Layout, Alert, Typography } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Row,
+  Layout,
+  Alert,
+  Typography,
+  notification,
+} from "antd";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
-import signUp from "../helpers/api/signUp";
 import { useState } from "react";
 import { setCookie } from "nookies";
 import { useRouter } from "next/router";
+import signUp from "../helpers/api/signUp";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -32,6 +41,15 @@ const SignupPage = () => {
       setCookie(null, "jwt", response.jwt, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
+      });
+      setCookie(null, "userId", response.user?.id, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+      });
+      notification.success({
+        key: "signup",
+        message: "Signup",
+        description: "Successfully signed up.",
       });
       router.push("/");
     }
