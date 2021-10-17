@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from "prop-types";
 import { parseCookies, setCookie } from "nookies";
 import { useEffect, useState } from "react";

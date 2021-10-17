@@ -42,6 +42,10 @@ a {
   flex-wrap: wrap;
 }
 
+.justify-between {
+  justify-content: space-between;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
