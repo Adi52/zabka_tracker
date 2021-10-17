@@ -41,3 +41,7 @@ a {
   flex-direction: row;
   flex-wrap: wrap;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}

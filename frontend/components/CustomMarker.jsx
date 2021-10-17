@@ -1,9 +1,9 @@
 import { Marker } from "@react-google-maps/api";
 
 const CustomMarker = (props) => {
-  const { id, title, description, position, setCenter } = props;
+  const { id, title, description, position, onPickMarker } = props;
   const onMarkerClick = () => {
-    setCenter(position);
+    onPickMarker({ position });
     console.log(id, title, description);
   };
 
