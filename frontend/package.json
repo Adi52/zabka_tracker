@@ -12,6 +12,7 @@
   "dependencies": {
     "antd": "^4.16.13",
     "axios": "^0.23.0",
+    "dayjs": "^1.10.7",
     "formik": "^2.2.9",
     "next": "11.1.2",
     "nookies": "^2.5.2",
@@ -24,10 +25,6 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.2",
     "babel-jest": "^27.2.5",
-    "identity-obj-proxy": "^3.0.0",
-    "jest": "^27.2.5",
-    "prettier": "2.4.1",
-    "react-test-renderer": "^17.0.2",
     "eslint": "7.29.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-next": "11.0.1",
@@ -36,6 +33,10 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
-    "eslint-plugin-react-hooks": "^4.2.0"
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.2.5",
+    "prettier": "2.4.1",
+    "react-test-renderer": "^17.0.2"
   }
 }
