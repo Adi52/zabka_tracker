@@ -1,17 +1,35 @@
-import { Layout, Typography } from "antd";
+import { Button, Layout, Typography } from "antd";
 import getUserById from "../../helpers/api/getUserById";
 import Map from "../../components/Map";
+import { parseCookies } from "nookies";
+import { useEffect, useState } from "react";
 
 const { Content } = Layout;
 const { Title } = Typography;
 
 const UserPage = ({ userData }) => {
+  const { jwt, userId } = parseCookies();
+  const [showAddButton, setShowAddButton] = useState(false);
+
+  useEffect(() => {
+    if (jwt && userId === userData.id.toString()) {
+      setShowAddButton(true);
+    } else {
+      setShowAddButton(false);
+    }
+  }, [jwt, userId]);
+
   return (
     <Content
       className="site-layout"
       style={{ padding: "0 50px", marginTop: 64 }}
     >
-      <Title level={3}>{userData.username}</Title>
+      <div className="flex-row justify-between">
+        <Title level={3} style={{ marginBottom: 0 }}>
+          {userData.username}
+        </Title>
+        {showAddButton && <Button type="primary">+ Add category</Button>}
+      </div>
       <div
         className="site-layout-content"
         style={{
