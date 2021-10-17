@@ -1,18 +1,16 @@
 import { Layout, Typography } from "antd";
-import getCategoryById from "../../helpers/api/getCategoryById";
+import getUserById from "../../helpers/api/getUserById";
 
 const { Content } = Layout;
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
-const CategoryPage = ({ category }) => {
-  const { name, description, markers } = category;
+const UserPage = ({ userData }) => {
   return (
     <Content
       className="site-layout"
       style={{ padding: "0 50px", marginTop: 64 }}
     >
-      <Title level={3}>{name}</Title>
-      <Text>{description}</Text>
+      <Title level={3}>{userData.username}</Title>
       <div
         className="site-layout-content"
         style={{
@@ -20,18 +18,14 @@ const CategoryPage = ({ category }) => {
           minHeight: "80vh",
           backgroundColor: "transparent",
         }}
-      >
-        {/*  todo: add map and markers list */}
-        {/* markers.map... */}
-        {/*  */}
-      </div>
+      ></div>
     </Content>
   );
 };
 
 export async function getServerSideProps(ctx) {
   const { id } = ctx.query;
-  const [error, response] = await getCategoryById({ id });
+  const [error, response] = await getUserById({ id });
 
   if (error) {
     return {
@@ -41,9 +35,9 @@ export async function getServerSideProps(ctx) {
 
   return {
     props: {
-      category: response,
+      userData: response,
     },
   };
 }
 
-export default CategoryPage;
+export default UserPage;
