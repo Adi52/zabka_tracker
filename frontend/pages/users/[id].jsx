@@ -16,7 +16,6 @@ const UserPage = ({ userData }) => {
         style={{
           padding: 24,
           minHeight: "80vh",
-          backgroundColor: "transparent",
         }}
       ></div>
     </Content>
