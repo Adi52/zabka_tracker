@@ -1,5 +1,5 @@
-import getCategoryById from "../../helpers/api/getCategoryById";
 import { Layout, Typography } from "antd";
+import getCategoryById from "../../helpers/api/getCategoryById";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
