@@ -1,7 +1,7 @@
 import { Button, Form, Input, Modal, notification } from "antd";
 import { useState } from "react";
-import addCategory from "../helpers/api/addCateogry";
 import { useRouter } from "next/router";
+import addCategory from "../helpers/api/addCateogry";
 
 const validateMessages = {
   // eslint-disable-next-line no-template-curly-in-string

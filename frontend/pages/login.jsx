@@ -18,6 +18,7 @@ const { Content } = Layout;
 const { Title } = Typography;
 
 const validateMessages = {
+  // eslint-disable-next-line no-template-curly-in-string
   required: "${label} is required!",
 };
 
