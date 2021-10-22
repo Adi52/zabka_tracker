@@ -25,7 +25,7 @@ exports[`renders homepage unchanged 1`] = `
       <code
         className="code"
       >
-        pages/index.js
+        pages/index.jsx
       </code>
     </p>
     <div

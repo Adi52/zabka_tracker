@@ -1,0 +1,13 @@
+import axios from "axios";
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+  axios.defaults.baseURL = "http://localhost:1337";
+} else {
+  axios.defaults.baseURL = "http://localhost:1337"; // todo: change it when backend will be on heroku
+}
+
+export const SIGNUP = "/auth/local/register";
+export const LOGIN = "/auth/local";
+export const CATEGORIES = "/categories";
+export const USERS = "/users";
+export const MARKERS = "/markers";

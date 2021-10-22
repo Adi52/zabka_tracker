@@ -39,6 +39,11 @@
     "category": {
       "via": "markers",
       "model": "category"
+    },
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "markers"
     }
   }
 }
