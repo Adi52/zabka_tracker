@@ -8,7 +8,7 @@ const validateMessages = {
   required: "${label} is required!",
 };
 
-const FooterComponent = ({ closeModal, loading }) => (
+export const FooterComponent = ({ closeModal, loading }) => (
   <div className="flex-row justify-end">
     <Button onClick={closeModal}>Close</Button>
     <Button
