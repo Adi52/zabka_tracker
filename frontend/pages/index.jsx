@@ -3,13 +3,15 @@ import { useEffect, useState } from "react";
 import { parseCookies } from "nookies";
 import Map from "../components/Map";
 import getMarkersList from "../helpers/api/getMarkersList";
+import getCategoriesList from "../helpers/api/getCategoriesList";
 
 const { Content } = Layout;
 const { Title } = Typography;
 
-const HomePage = ({ markers }) => {
+const HomePage = ({ markers, categoriesList }) => {
   const { jwt } = parseCookies();
   const [isLogged, setIsLogged] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
     if (jwt) {
@@ -28,7 +30,11 @@ const HomePage = ({ markers }) => {
         <Title level={3} style={{ marginBottom: 0 }}>
           Dashboard
         </Title>
-        {isLogged && <Button type="primary">+ Add place</Button>}
+        {isLogged && (
+          <Button type="primary" onClick={() => setIsEditMode(true)}>
+            + Add place
+          </Button>
+        )}
       </div>
       <div
         className="site-layout-content"
@@ -38,7 +44,12 @@ const HomePage = ({ markers }) => {
           display: "flex",
         }}
       >
-        <Map markers={markers} />
+        <Map
+          markers={markers}
+          isEditMode={isEditMode}
+          setIsEditMode={setIsEditMode}
+          categoriesList={categoriesList}
+        />
       </div>
     </Content>
   );
@@ -46,8 +57,9 @@ const HomePage = ({ markers }) => {
 
 export async function getServerSideProps() {
   const [error, response] = await getMarkersList();
+  const [error2, response2] = await getCategoriesList();
 
-  if (error) {
+  if (error || error2) {
     return {
       notFound: true,
     };
@@ -56,6 +68,7 @@ export async function getServerSideProps() {
   return {
     props: {
       markers: response,
+      categoriesList: response2,
     },
   };
 }

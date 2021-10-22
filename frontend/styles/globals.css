@@ -53,3 +53,18 @@ a {
 .justify-end {
   justify-content: flex-end;
 }
+
+.map-label {
+  background-color: white;
+  padding: 10px 15px;
+  border-radius: 3px;
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #001529 !important;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}

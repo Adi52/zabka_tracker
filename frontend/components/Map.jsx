@@ -1,7 +1,11 @@
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import React, { useState } from "react";
-import { Table } from "antd";
+import { Button, Table, Typography } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 import CustomMarker from "./CustomMarker";
+import AddMarkerModal from "./AddMarkerModal";
+
+const { Title } = Typography;
 
 const columns = [
   {
@@ -21,7 +25,7 @@ const columns = [
   },
 ];
 
-const Map = ({ markers = [] }) => {
+const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
   const containerStyle = {
     width: "100%",
     height: "100%",
@@ -35,6 +39,8 @@ const Map = ({ markers = [] }) => {
     position: { lat: marker.latitude, lng: marker.longitude },
   }));
 
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [newMarkerLocation, setNewMarkerLocation] = useState({});
   const [center, setCenter] = useState({ lat: 54.352, lng: 18.6466 });
 
   const onPickMarker = (data) => {
@@ -45,7 +51,14 @@ const Map = ({ markers = [] }) => {
 
   return (
     <>
-      <div style={{ flex: 1 }}>
+      <div
+        style={{
+          flex: 1,
+          border: "3px solid #fff",
+          borderColor: isEditMode ? "#1890FF" : "#fff",
+          transition: "all 0.1s ease-in-out",
+        }}
+      >
         <LoadScript
           googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
         >
@@ -54,6 +67,15 @@ const Map = ({ markers = [] }) => {
             center={center}
             zoom={12}
             clickableIcons={false}
+            onClick={(e) => {
+              if (isEditMode) {
+                setNewMarkerLocation({
+                  lat: e.latLng.lat(),
+                  lng: e.latLng.lng(),
+                });
+                setIsOpenModal(true);
+              }
+            }}
           >
             <>
               {markers.map((marker) => (
@@ -66,6 +88,28 @@ const Map = ({ markers = [] }) => {
                   onPickMarker={onPickMarker}
                 />
               ))}
+              {isOpenModal && (
+                <CustomMarker
+                  position={{
+                    lat: newMarkerLocation.lat,
+                    lng: newMarkerLocation.lng,
+                  }}
+                  onPickMarker={onPickMarker}
+                />
+              )}
+              {isEditMode && (
+                <div className="map-label">
+                  <Title level={4} style={{ marginBottom: 0 }}>
+                    Click on map to add Marker
+                  </Title>
+                  <Button
+                    style={{ marginLeft: 30 }}
+                    type="primary"
+                    icon={<CloseOutlined />}
+                    onClick={() => setIsEditMode(false)}
+                  />
+                </div>
+              )}
             </>
           </GoogleMap>
         </LoadScript>
@@ -81,6 +125,12 @@ const Map = ({ markers = [] }) => {
           })}
         />
       </div>
+      <AddMarkerModal
+        visible={isOpenModal}
+        setVisible={setIsOpenModal}
+        categoriesList={categoriesList}
+        newMarkerLocation={newMarkerLocation}
+      />
     </>
   );
 };
