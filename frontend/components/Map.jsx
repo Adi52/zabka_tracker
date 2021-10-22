@@ -1,8 +1,6 @@
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import React, { useState } from "react";
 import { Table } from "antd";
-import Link from "next/link";
-import dayjs from "dayjs";
 import CustomMarker from "./CustomMarker";
 
 const columns = [

@@ -1,8 +1,8 @@
 import { Button, Layout, Typography } from "antd";
-import getUserById from "../../helpers/api/getUserById";
-import Map from "../../components/Map";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
+import getUserById from "../../helpers/api/getUserById";
+import Map from "../../components/Map";
 
 const { Content } = Layout;
 const { Title } = Typography;
