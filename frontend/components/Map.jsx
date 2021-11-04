@@ -1,9 +1,10 @@
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
-import React, { useState } from "react";
-import { Button, Table, Typography } from "antd";
+import { Circle, GoogleMap, LoadScript } from "@react-google-maps/api";
+import React, { useEffect, useState } from "react";
+import { Button, Table, Typography, Slider, InputNumber, Row, Col } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import CustomMarker from "./CustomMarker";
 import AddMarkerModal from "./AddMarkerModal";
+import pointInRange from "../utils/functions/calculateRange";
 
 const { Title } = Typography;
 
@@ -30,30 +31,57 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
     width: "100%",
     height: "100%",
   };
-
-  const tableData = markers.map((marker, index) => ({
-    key: marker.id,
-    id: index + 1,
-    title: marker.title,
-    description: marker.description,
-    position: { lat: marker.latitude, lng: marker.longitude },
-  }));
-
+  const [tableData, setTableData] = useState([]);
+  const [filteredMarkers, setFilteredMarkers] = useState(markers);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [newMarkerLocation, setNewMarkerLocation] = useState({});
   const [center, setCenter] = useState({ lat: 54.352, lng: 18.6466 });
+  const [visibleBox, setVisibleBox] = useState({ id: null, open: false });
+  const [range, setRange] = useState(10);
 
   const onPickMarker = (data) => {
     setCenter(data.position);
-    console.log(data);
-    // todo: add open marker data.
+    const markerId = markers.find(
+      (marker) =>
+        marker.latitude === data.position.lat &&
+        marker.longitude === data.position.lng
+    )?.id;
+    setVisibleBox({ id: markerId, open: true });
   };
+
+  useEffect(() => {
+    if (isOpenModal) {
+      setVisibleBox({ id: null, open: false });
+    }
+  }, [isOpenModal]);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-underscore-dangle
+    const _filteredMarkers = markers.filter((marker) =>
+      pointInRange(
+        center,
+        { lat: marker.latitude, lng: marker.longitude },
+        range
+      )
+    );
+    setFilteredMarkers(_filteredMarkers);
+    setTableData(
+      _filteredMarkers.map((marker, index) => ({
+        key: marker.id,
+        id: index + 1,
+        title: marker.title,
+        description: marker.description,
+        position: { lat: marker.latitude, lng: marker.longitude },
+      }))
+    );
+  }, [center, range, markers]);
 
   return (
     <>
       <div
         style={{
           flex: 1,
+          minHeight: 681,
           border: "3px solid #fff",
           borderColor: isEditMode ? "#1890FF" : "#fff",
           transition: "all 0.1s ease-in-out",
@@ -78,7 +106,17 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
             }}
           >
             <>
-              {markers.map((marker) => (
+              <Circle
+                center={center}
+                radius={range * 1000}
+                options={{
+                  fillOpacity: 0.2,
+                  fillColor: "#91d5ff",
+                  strokeWeight: 2,
+                  strokeColor: "#91d5ff",
+                }}
+              />
+              {filteredMarkers.map((marker) => (
                 <CustomMarker
                   key={marker.id}
                   position={{ lat: marker.latitude, lng: marker.longitude }}
@@ -86,6 +124,9 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
                   id={marker.id}
                   description={marker.description}
                   onPickMarker={onPickMarker}
+                  user={marker.user}
+                  setVisibleBox={setVisibleBox}
+                  visibleBox={visibleBox}
                 />
               ))}
               {isOpenModal && (
@@ -114,12 +155,35 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
           </GoogleMap>
         </LoadScript>
       </div>
-      <div style={{ width: 500, marginLeft: 20 }}>
+      <div style={{ maxwidth: 500, marginLeft: 20 }}>
+        <Title level={5}>Range (km)</Title>
+        <Row>
+          <Col span={14}>
+            <Slider
+              min={0}
+              max={20}
+              onChange={(r) => setRange(r)}
+              value={typeof range === "number" ? range : 0}
+              step={0.1}
+            />
+          </Col>
+          <Col span={4}>
+            <InputNumber
+              min={0}
+              max={20}
+              style={{ margin: "0 16px" }}
+              value={range}
+              onChange={(r) => setRange(r)}
+              step={0.1}
+            />
+          </Col>
+        </Row>
+        <div style={{ margin: 10 }} />
         <Table
           rowClassName="cursor-pointer"
           columns={columns}
           dataSource={tableData}
-          pagination={{ pageSize: 15 }}
+          pagination={{ pageSize: 8 }}
           onRow={(record) => ({
             onClick: () => onPickMarker(record),
           })}
