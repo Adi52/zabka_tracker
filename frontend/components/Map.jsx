@@ -110,7 +110,7 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
             <>
               {!isEditMode && (
                 <Circle
-                  center={center}
+                  center={{ lat: 54.352, lng: 18.6466 }}
                   radius={range * 1000}
                   options={{
                     fillOpacity: 0.2,
@@ -131,7 +131,7 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
                   user={marker.user}
                   setVisibleBox={setVisibleBox}
                   visibleBox={visibleBox}
-                  isOwner={marker.user.id.toString() === userId}
+                  isOwner={marker.user.id?.toString() || marker.user === userId}
                 />
               ))}
               {isOpenModal && (
