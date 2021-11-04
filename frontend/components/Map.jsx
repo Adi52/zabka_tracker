@@ -5,6 +5,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import CustomMarker from "./CustomMarker";
 import AddMarkerModal from "./AddMarkerModal";
 import pointInRange from "../utils/functions/calculateRange";
+import { parseCookies } from "nookies";
 
 const { Title } = Typography;
 
@@ -27,6 +28,7 @@ const columns = [
 ];
 
 const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
+  const { userId } = parseCookies();
   const containerStyle = {
     width: "100%",
     height: "100%",
@@ -106,16 +108,18 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
             }}
           >
             <>
-              <Circle
-                center={center}
-                radius={range * 1000}
-                options={{
-                  fillOpacity: 0.2,
-                  fillColor: "#91d5ff",
-                  strokeWeight: 2,
-                  strokeColor: "#91d5ff",
-                }}
-              />
+              {!isEditMode && (
+                <Circle
+                  center={center}
+                  radius={range * 1000}
+                  options={{
+                    fillOpacity: 0.2,
+                    fillColor: "#91d5ff",
+                    strokeWeight: 2,
+                    strokeColor: "#91d5ff",
+                  }}
+                />
+              )}
               {filteredMarkers.map((marker) => (
                 <CustomMarker
                   key={marker.id}
@@ -127,6 +131,7 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
                   user={marker.user}
                   setVisibleBox={setVisibleBox}
                   visibleBox={visibleBox}
+                  isOwner={marker.user.id.toString() === userId}
                 />
               ))}
               {isOpenModal && (
@@ -165,6 +170,7 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
               onChange={(r) => setRange(r)}
               value={typeof range === "number" ? range : 0}
               step={0.1}
+              disabled={isEditMode}
             />
           </Col>
           <Col span={4}>
@@ -175,6 +181,7 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
               value={range}
               onChange={(r) => setRange(r)}
               step={0.1}
+              disabled={isEditMode}
             />
           </Col>
         </Row>
