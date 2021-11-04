@@ -1,8 +1,22 @@
-'use strict';
+const { parseMultipartData, sanitizeEntity } = require("strapi-utils");
 
-/**
- * Read the documentation (https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#core-controllers)
- * to customize this controller
- */
+module.exports = {
+  async delete(ctx) {
+    const { id } = ctx.params;
 
-module.exports = {};
+    let entity;
+
+    const [marker] = await strapi.services.marker.find({
+      id: ctx.params.id,
+      "user.id": ctx.state.user.id,
+    });
+
+    if (!marker) {
+      return ctx.unauthorized(`You can't update this entry`);
+    }
+
+    entity = await strapi.services.marker.delete({ id }, ctx.request.body);
+
+    return sanitizeEntity(entity, { model: strapi.models.marker });
+  },
+};
