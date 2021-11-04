@@ -1,5 +1,5 @@
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Table, Typography } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import CustomMarker from "./CustomMarker";
@@ -42,12 +42,23 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [newMarkerLocation, setNewMarkerLocation] = useState({});
   const [center, setCenter] = useState({ lat: 54.352, lng: 18.6466 });
+  const [visibleBox, setVisibleBox] = useState({ id: null, open: false });
 
   const onPickMarker = (data) => {
     setCenter(data.position);
-    console.log(data);
-    // todo: add open marker data.
+    const markerId = markers.find(
+      (marker) =>
+        marker.latitude === data.position.lat &&
+        marker.longitude === data.position.lng
+    )?.id;
+    setVisibleBox({ id: markerId, open: true });
   };
+
+  useEffect(() => {
+    if (isOpenModal) {
+      setVisibleBox({ id: null, open: false });
+    }
+  }, [isOpenModal]);
 
   return (
     <>
@@ -86,6 +97,9 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
                   id={marker.id}
                   description={marker.description}
                   onPickMarker={onPickMarker}
+                  user={marker.user}
+                  setVisibleBox={setVisibleBox}
+                  visibleBox={visibleBox}
                 />
               ))}
               {isOpenModal && (
@@ -114,7 +128,7 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
           </GoogleMap>
         </LoadScript>
       </div>
-      <div style={{ width: 500, marginLeft: 20 }}>
+      <div style={{ maxwidth: 500, marginLeft: 20 }}>
         <Table
           rowClassName="cursor-pointer"
           columns={columns}
