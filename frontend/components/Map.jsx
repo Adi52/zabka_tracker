@@ -9,6 +9,7 @@ import pointInRange from "../utils/functions/calculateRange";
 
 const { Title } = Typography;
 
+const MAIN_CENTER = { lat: 54.352, lng: 18.6466 };
 const columns = [
   {
     title: "Id",
@@ -37,7 +38,7 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
   const [filteredMarkers, setFilteredMarkers] = useState(markers);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [newMarkerLocation, setNewMarkerLocation] = useState({});
-  const [center, setCenter] = useState({ lat: 54.352, lng: 18.6466 });
+  const [center, setCenter] = useState(MAIN_CENTER);
   const [visibleBox, setVisibleBox] = useState({ id: null, open: false });
   const [range, setRange] = useState(10);
 
@@ -61,7 +62,7 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
     // eslint-disable-next-line no-underscore-dangle
     const _filteredMarkers = markers.filter((marker) =>
       pointInRange(
-        center,
+        MAIN_CENTER,
         { lat: marker.latitude, lng: marker.longitude },
         range
       )
@@ -110,7 +111,7 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
             <>
               {!isEditMode && (
                 <Circle
-                  center={{ lat: 54.352, lng: 18.6466 }}
+                  center={MAIN_CENTER}
                   radius={range * 1000}
                   options={{
                     fillOpacity: 0.2,
@@ -131,7 +132,9 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
                   user={marker.user}
                   setVisibleBox={setVisibleBox}
                   visibleBox={visibleBox}
-                  isOwner={marker.user.id?.toString() || marker.user === userId}
+                  isOwner={
+                    (marker.user.id?.toString() || marker.user) === userId
+                  }
                 />
               ))}
               {isOpenModal && (
