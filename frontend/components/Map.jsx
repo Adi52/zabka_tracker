@@ -2,10 +2,10 @@ import { Circle, GoogleMap, LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
 import { Button, Table, Typography, Slider, InputNumber, Row, Col } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
+import { parseCookies } from "nookies";
 import CustomMarker from "./CustomMarker";
 import AddMarkerModal from "./AddMarkerModal";
 import pointInRange from "../utils/functions/calculateRange";
-import { parseCookies } from "nookies";
 
 const { Title } = Typography;
 
