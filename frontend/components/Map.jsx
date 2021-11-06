@@ -163,7 +163,7 @@ const Map = ({ markers = [], isEditMode, setIsEditMode, categoriesList }) => {
           </GoogleMap>
         </LoadScript>
       </div>
-      <div style={{ maxwidth: 500, marginLeft: 20 }}>
+      <div style={{ width: 500, marginLeft: 20 }}>
         <Title level={5}>Range (km)</Title>
         <Row>
           <Col span={14}>
