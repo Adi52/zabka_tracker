@@ -4,6 +4,7 @@ import { parseCookies, setCookie } from "nookies";
 import { useEffect, useState } from "react";
 import { Layout, Menu, notification } from "antd";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import NAVIGATION, { NO_AUTH } from "../utils/constans/navigation";
 import NavItem from "./NavItem";
 
@@ -35,7 +36,9 @@ const PageLayout = ({ children }) => {
   return (
     <Layout className="layout">
       <Header>
-        <div className="logo" />
+        <div className="logo">
+          <Image src="/logo.png" width="120" height="31" />
+        </div>
         <Menu theme="dark" mode="horizontal" selectedKeys={["/"]}>
           {NAVIGATION.map((item) => (
             <NavItem key={item.id} slug={item.slug} label={item.label} />
